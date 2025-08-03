@@ -301,16 +301,19 @@
     const previewImage = document.getElementById('previewImage');
     const downloadBtn = document.getElementById('downloadBtn');
     const closePreview = document.getElementById('closePreview');
+
     // Настройка контекста
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.strokeStyle = colorInput.value;
     ctx.lineWidth = thicknessInput.value;
+
     // Обновление значения толщины
     thicknessInput.addEventListener('input', () => {
       ctx.lineWidth = thicknessInput.value;
       thicknessValue.textContent = `${thicknessInput.value}px`;
     });
+
     // Переключение инструментов
     function setTool(tool) {
       currentTool = tool;
@@ -325,6 +328,7 @@
         ctx.globalCompositeOperation = 'destination-out';
       }
     }
+
     brushBtn.addEventListener('click', () => setTool('brush'));
     eraserBtn.addEventListener('click', () => setTool('eraser'));
     colorInput.addEventListener('input', () => {
@@ -332,10 +336,12 @@
         ctx.strokeStyle = colorInput.value;
       }
     });
+
     clearBtn.addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       currentDrawing = [];
     });
+
     nextBtn.addEventListener('click', () => {
       const dataUrl = canvas.toDataURL('image/png');
       if (editingIndex === null) {
@@ -347,8 +353,9 @@
       currentDrawing = [];
       updateThumbnails();
       editingIndex = null;
-      // Уведомление alert удалено: "Мысль сохранена! Всего: ..."
+      // Уведомление удалено: alert("Мысль сохранена!...")
     });
+
     function updateThumbnails() {
       thumbnailsContainer.innerHTML = '';
       allDrawings.forEach((dataUrl, index) => {
@@ -369,20 +376,22 @@
         });
       });
     }
+
     function loadDrawingForEdit(index) {
       const img = new Image();
       img.onload = () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         editingIndex = index;
-        alert(`Редактируем мысль №${index + 1}`);
+        // Уведомление удалено: alert(`Редактируем мысль №${index + 1}`);
       };
       img.src = allDrawings[index];
     }
+
     function generateFinalImage() {
       return new Promise((resolve, reject) => {
         if (allDrawings.length === 0) {
-          alert("Нет ни одной зарисовки!");
+          // Уведомление удалено: alert("Нет ни одной зарисовки!");
           resolve(null);
           return;
         }
@@ -448,6 +457,7 @@
         });
       });
     }
+
     finishBtn.addEventListener('click', async () => {
       try {
         const blob = await generateFinalImage();
@@ -465,18 +475,21 @@
           URL.revokeObjectURL(imageUrl);
         };
       } catch (err) {
-        alert("Ошибка при создании изображения.");
-        console.error(err);
+        // Уведомление удалено: alert("Ошибка при создании изображения.");
+        console.error("Ошибка при создании изображения:", err);
       }
     });
+
     closePreview.addEventListener('click', () => {
       previewModal.style.display = 'none';
     });
+
     // Рисование
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
+
     function startDrawing(e) {
       isDrawing = true;
       const rect = canvas.getBoundingClientRect();
@@ -486,6 +499,7 @@
       ctx.moveTo(x, y);
       currentDrawing.push({ x, y });
     }
+
     function draw(e) {
       if (!isDrawing) return;
       const rect = canvas.getBoundingClientRect();
@@ -495,10 +509,12 @@
       ctx.stroke();
       currentDrawing.push({ x, y });
     }
+
     function stopDrawing() {
       isDrawing = false;
       ctx.beginPath();
     }
+
     // Инициализация
     setTool('brush');
   </script>

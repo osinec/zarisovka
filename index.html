@@ -33,17 +33,19 @@
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      align-items: flex-start; /* Выравнивание по верху */
-      gap: 10px; /* Уменьшенный отступ между панелями */
+      align-items: flex-start;
+      gap: 10px;
     }
+
     /* Левая панель — только надпись */
     .image-panel {
       flex: 0 0 100px; /* Узкая панель */
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding-top: 20px; /* Совпадает с началом canvas-container */
+      align-items: center; /* ✏️ РЕГУЛИРУЕТ ГОРИЗОНТАЛЬНОЕ ВЫРАВНИВАНИЕ НАДПИСИ (center, flex-start, flex-end) */
+      padding-top: 20px; /* ✏️ РЕГУЛИРУЕТ ОТСТУП СВЕРХУ — МЕНЯЙ, ЧТОБЫ СДВИНУТЬ НАДПИСЬ ВЫШЕ/НИЖЕ */
     }
+
     .image-panel .label {
       font-size: 0.9rem;
       color: #64748b;
@@ -51,12 +53,13 @@
       font-weight: 500;
       line-height: 1.3;
       background-color: #f1f5f9;
-      padding: 8px 6px;
+      padding: 8px 6px; /* ✏️ ВНУТРЕННИЕ ОТСТУПЫ ВНУТРИ БЛОКА НАДПИСИ */
       border-radius: 8px;
       border: 1px dashed #cbd5e1;
-      width: 90%;
+      width: 90%; /* ✏️ ШИРИНА БЛОКА НАДПИСИ (относительно панели) */
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
+
     /* Основной контент */
     .main-content {
       flex: 1;
@@ -103,7 +106,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       background-color: white;
-      margin: 0 auto; /* Центрируем canvas */
+      margin: 0 auto;
     }
     .corner {
       position: absolute;
@@ -268,14 +271,12 @@
   <div class="container">
     <!-- Левая панель -->
     <div class="image-panel">
-      <div class="label">Область для листания</div>
+      <div class="label">Область для листания</div> <!-- ✏️ ЭТО НАДПИСЬ -->
     </div>
-
     <!-- Основной контент -->
     <div class="main-content">
       <h1>Зарисовки к выступлению</h1>
       <p class="subtitle">Образы и картинки забыть труднее, чем текст</p>
-
       <div class="toolbar">
         <button id="brush" class="primary active-tool">🖌️ Кисть</button>
         <button id="eraser" class="secondary">🧽 Ластик</button>
@@ -283,7 +284,6 @@
         <button id="next" class="primary">➡️ Следующая зарисовка</button>
         <button id="finish" class="primary">✅ Завершить</button>
       </div>
-
       <div class="controls">
         <label>
           Цвет: <input type="color" id="color" value="#2563eb" />
@@ -294,7 +294,6 @@
           <span id="thicknessValue" style="font-size:13px; color:#64748b;">5px</span>
         </label>
       </div>
-
       <div id="canvas-container">
         <div class="corner tl">↖️</div>
         <div class="corner tr">↗️</div>
@@ -302,11 +301,9 @@
         <div class="corner br">↘️</div>
         <canvas id="canvas" width="800" height="600"></canvas>
       </div>
-
       <h3 class="thumbnails-title">Все зарисовки</h3>
       <p class="hint">Кликните по картинке, чтобы отредактировать</p>
       <div id="thumbnails"></div>
-
       <div id="previewModal">
         <img id="previewImage" alt="Объединённые зарисовки" />
         <div id="previewActions">
@@ -316,7 +313,6 @@
       </div>
     </div>
   </div>
-
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -325,7 +321,6 @@
     let allDrawings = [];
     let currentTool = 'brush';
     let editingIndex = null;
-
     const brushBtn = document.getElementById('brush');
     const eraserBtn = document.getElementById('eraser');
     const clearBtn = document.getElementById('clear');
@@ -339,19 +334,16 @@
     const previewImage = document.getElementById('previewImage');
     const downloadBtn = document.getElementById('downloadBtn');
     const closePreview = document.getElementById('closePreview');
-
     // Настройка контекста
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.strokeStyle = colorInput.value;
     ctx.lineWidth = thicknessInput.value;
-
     // Обновление значения толщины
     thicknessInput.addEventListener('input', () => {
       ctx.lineWidth = thicknessInput.value;
       thicknessValue.textContent = `${thicknessInput.value}px`;
     });
-
     // Переключение инструментов
     function setTool(tool) {
       currentTool = tool;
@@ -366,21 +358,17 @@
         ctx.globalCompositeOperation = 'destination-out';
       }
     }
-
     brushBtn.addEventListener('click', () => setTool('brush'));
     eraserBtn.addEventListener('click', () => setTool('eraser'));
-
     colorInput.addEventListener('input', () => {
       if (currentTool === 'brush') {
         ctx.strokeStyle = colorInput.value;
       }
     });
-
     clearBtn.addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       currentDrawing = [];
     });
-
     nextBtn.addEventListener('click', () => {
       const dataUrl = canvas.toDataURL('image/png');
       if (editingIndex === null) {
@@ -393,7 +381,6 @@
       updateThumbnails();
       editingIndex = null;
     });
-
     function updateThumbnails() {
       thumbnailsContainer.innerHTML = '';
       allDrawings.forEach((dataUrl, index) => {
@@ -414,7 +401,6 @@
         });
       });
     }
-
     function loadDrawingForEdit(index) {
       const img = new Image();
       img.onload = () => {
@@ -424,7 +410,6 @@
       };
       img.src = allDrawings[index];
     }
-
     function generateFinalImage() {
       return new Promise((resolve, reject) => {
         if (allDrawings.length === 0) {
@@ -441,7 +426,6 @@
         const finalCtx = finalCanvas.getContext('2d');
         finalCtx.fillStyle = 'white';
         finalCtx.fillRect(0, 0, width, totalHeight);
-        
         let loaded = 0;
         const images = [];
         allDrawings.forEach((dataUrl, index) => {
@@ -453,11 +437,8 @@
               let y = 0;
               for (let i = 0; i < images.length; i++) {
                 if (images[i]) {
-                  // Центрируем каждое изображение по горизонтали
                   const x = (width - images[i].width) / 2;
                   finalCtx.drawImage(images[i], x, y, width, height);
-                  
-                  // Номер в правом нижнем углу
                   finalCtx.font = 'bold 36px Arial';
                   finalCtx.textBaseline = 'bottom';
                   finalCtx.fillStyle = 'black';
@@ -482,7 +463,6 @@
                 if (images[i]) {
                   const x = (width - images[i].width) / 2;
                   finalCtx.drawImage(images[i], x, y, width, height);
-                  
                   finalCtx.font = 'bold 36px Arial';
                   finalCtx.textBaseline = 'bottom';
                   finalCtx.fillStyle = 'black';
@@ -503,7 +483,6 @@
         });
       });
     }
-
     finishBtn.addEventListener('click', async () => {
       try {
         const blob = await generateFinalImage();
@@ -524,11 +503,9 @@
         console.error("Ошибка при создании изображения:", err);
       }
     });
-
     closePreview.addEventListener('click', () => {
       previewModal.style.display = 'none';
     });
-
     // Рисование (мышь)
     function startDrawing(e) {
       isDrawing = true;
@@ -556,7 +533,6 @@
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
-
     // Рисование (тач)
     canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
@@ -569,7 +545,6 @@
       ctx.moveTo(x, y);
       currentDrawing.push({ x, y });
     }, { passive: false });
-
     canvas.addEventListener('touchmove', (e) => {
       if (!isDrawing) return;
       e.preventDefault();
@@ -581,7 +556,6 @@
       ctx.stroke();
       currentDrawing.push({ x, y });
     }, { passive: false });
-
     canvas.addEventListener('touchend', () => {
       isDrawing = false;
       ctx.beginPath();
@@ -590,7 +564,6 @@
       isDrawing = false;
       ctx.beginPath();
     });
-
     // Инициализация
     setTool('brush');
   </script>

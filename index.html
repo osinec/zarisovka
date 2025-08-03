@@ -16,7 +16,7 @@
       --border: #e2e8f0;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --frame-color: #3b82f6; /* Цвет рамки */
+      --frame-color: #3b82f6;
     }
     * {
       box-sizing: border-box;
@@ -33,40 +33,35 @@
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      align-items: flex-start;
-      gap: 20px;
+      align-items: flex-start; /* Выравнивание по верху */
+      gap: 10px; /* Уменьшенный отступ между панелями */
     }
-
-    /* Левая панель с изображением */
+    /* Левая панель — только надпись */
     .image-panel {
-      flex: 0 0 120px;
+      flex: 0 0 100px; /* Узкая панель */
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      padding: 15px 0;
-    }
-    .image-panel img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-      opacity: 0.8;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      padding-top: 20px; /* Совпадает с началом canvas-container */
     }
     .image-panel .label {
       font-size: 0.9rem;
       color: #64748b;
       text-align: center;
-      margin-top: 10px;
       font-weight: 500;
+      line-height: 1.3;
+      background-color: #f1f5f9;
+      padding: 8px 6px;
+      border-radius: 8px;
+      border: 1px dashed #cbd5e1;
+      width: 90%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-
     /* Основной контент */
     .main-content {
       flex: 1;
       min-width: 0;
     }
-
     h1 {
       font-weight: 700;
       font-size: 2rem;
@@ -80,7 +75,6 @@
       margin-bottom: 30px;
       text-align: center;
     }
-
     #canvas-container {
       margin: 20px 0;
       border-radius: 12px;
@@ -109,6 +103,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       background-color: white;
+      margin: 0 auto; /* Центрируем canvas */
     }
     .corner {
       position: absolute;
@@ -121,7 +116,6 @@
     .corner.tr { top: 20px; right: 20px; }
     .corner.bl { bottom: 20px; left: 20px; }
     .corner.br { bottom: 20px; right: 20px; }
-
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -272,9 +266,9 @@
 </head>
 <body>
   <div class="container">
-    <!-- Левая панель с изображением -->
+    <!-- Левая панель -->
     <div class="image-panel">
-      <div class="label">Область для<br>листания</div>
+      <div class="label">Область для листания</div>
     </div>
 
     <!-- Основной контент -->
@@ -295,7 +289,8 @@
           Цвет: <input type="color" id="color" value="#2563eb" />
         </label>
         <label>
-          Толщина: <input type="range" id="thickness" min="1" max="50" value="5" style="width: 100px;" />
+          Толщина: 
+          <input type="range" id="thickness" min="1" max="50" value="5" style="width: 100px;" />
           <span id="thicknessValue" style="font-size:13px; color:#64748b;">5px</span>
         </label>
       </div>
@@ -446,9 +441,7 @@
         const finalCtx = finalCanvas.getContext('2d');
         finalCtx.fillStyle = 'white';
         finalCtx.fillRect(0, 0, width, totalHeight);
-        finalCtx.font = 'bold 36px Arial';
-        finalCtx.textBaseline = 'bottom';
-        finalCtx.fillStyle = 'black';
+        
         let loaded = 0;
         const images = [];
         allDrawings.forEach((dataUrl, index) => {
@@ -460,14 +453,21 @@
               let y = 0;
               for (let i = 0; i < images.length; i++) {
                 if (images[i]) {
-                  finalCtx.drawImage(images[i], 0, y, width, height);
+                  // Центрируем каждое изображение по горизонтали
+                  const x = (width - images[i].width) / 2;
+                  finalCtx.drawImage(images[i], x, y, width, height);
+                  
+                  // Номер в правом нижнем углу
+                  finalCtx.font = 'bold 36px Arial';
+                  finalCtx.textBaseline = 'bottom';
+                  finalCtx.fillStyle = 'black';
                   const margin = 20;
                   const textWidth = finalCtx.measureText(i + 1).width;
                   const bgPadding = 8;
                   finalCtx.fillStyle = 'white';
-                  finalCtx.fillRect(margin - bgPadding, y + height - margin + 36 - bgPadding, textWidth + bgPadding * 2, 36 + bgPadding);
+                  finalCtx.fillRect(width - margin - textWidth - bgPadding, y + height - margin + 36 - bgPadding, textWidth + bgPadding * 2, 36 + bgPadding);
                   finalCtx.fillStyle = 'black';
-                  finalCtx.fillText(i + 1, margin, y + height - margin);
+                  finalCtx.fillText(i + 1, width - margin - textWidth, y + height - margin);
                 }
                 y += height + padding;
               }
@@ -480,14 +480,19 @@
               let y = 0;
               for (let i = 0; i < images.length; i++) {
                 if (images[i]) {
-                  finalCtx.drawImage(images[i], 0, y, width, height);
+                  const x = (width - images[i].width) / 2;
+                  finalCtx.drawImage(images[i], x, y, width, height);
+                  
+                  finalCtx.font = 'bold 36px Arial';
+                  finalCtx.textBaseline = 'bottom';
+                  finalCtx.fillStyle = 'black';
                   const margin = 20;
                   const textWidth = finalCtx.measureText(i + 1).width;
                   const bgPadding = 8;
                   finalCtx.fillStyle = 'white';
-                  finalCtx.fillRect(margin - bgPadding, y + height - margin + 36 - bgPadding, textWidth + bgPadding * 2, 36 + bgPadding);
+                  finalCtx.fillRect(width - margin - textWidth - bgPadding, y + height - margin + 36 - bgPadding, textWidth + bgPadding * 2, 36 + bgPadding);
                   finalCtx.fillStyle = 'black';
-                  finalCtx.fillText(i + 1, margin, y + height - margin);
+                  finalCtx.fillText(i + 1, width - margin - textWidth, y + height - margin);
                 }
                 y += height + padding;
               }
@@ -534,7 +539,6 @@
       ctx.moveTo(x, y);
       currentDrawing.push({ x, y });
     }
-
     function draw(e) {
       if (!isDrawing) return;
       const rect = canvas.getBoundingClientRect();
@@ -544,12 +548,10 @@
       ctx.stroke();
       currentDrawing.push({ x, y });
     }
-
     function stopDrawing() {
       isDrawing = false;
       ctx.beginPath();
     }
-
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
@@ -557,7 +559,7 @@
 
     // Рисование (тач)
     canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // Только для canvas
+      e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       const x = touch.clientX - rect.left;
@@ -570,7 +572,7 @@
 
     canvas.addEventListener('touchmove', (e) => {
       if (!isDrawing) return;
-      e.preventDefault(); // Только при рисовании
+      e.preventDefault();
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       const x = touch.clientX - rect.left;
@@ -584,7 +586,6 @@
       isDrawing = false;
       ctx.beginPath();
     });
-
     canvas.addEventListener('touchcancel', () => {
       isDrawing = false;
       ctx.beginPath();

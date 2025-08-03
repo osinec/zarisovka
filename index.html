@@ -16,7 +16,7 @@
       --border: #e2e8f0;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --frame-color: #3b82f6; /* Цвет рамки */
+      --frame-color: #3b82f6;
     }
     * {
       box-sizing: border-box;
@@ -46,7 +46,6 @@
       max-width: 1000px;
       margin: 0 auto;
     }
-    /* Контейнер с рамкой */
     #canvas-container {
       margin: 20px auto;
       border-radius: 12px;
@@ -54,9 +53,9 @@
       box-shadow: var(--shadow-lg);
       transition: transform 0.2s ease;
       position: relative;
-      padding: 15px; /* Отступ для рамки */
+      padding: 15px;
       background-color: white;
-      border: 3px solid var(--frame-color); /* Яркая рамка вокруг */
+      border: 3px solid var(--frame-color);
     }
     #canvas-container::before {
       content: "";
@@ -76,7 +75,6 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       background-color: white;
     }
-    /* Угловые метки (опционально) */
     .corner {
       position: absolute;
       font-size: 10px;
@@ -152,7 +150,6 @@
       align-items: center;
       gap: 6px;
     }
-    /* Миниатюры */
     .thumbnails-title {
       font-size: 1.1rem;
       font-weight: 600;
@@ -202,7 +199,6 @@
       border-radius: 4px;
       color: var(--text);
     }
-    /* Модальное окно */
     #previewModal {
       display: none;
       position: fixed;
@@ -231,7 +227,6 @@
       display: flex;
       gap: 12px;
     }
-    /* Подсказка */
     .hint {
       font-size: 14px;
       color: #64748b;
@@ -241,13 +236,13 @@
 </head>
 <body>
   <div class="container">
-    <h1>Зарисовки к выступленияю </h1>
+    <h1>Зарисовки к выступлению</h1>
     <p class="subtitle">Образы и картинки забыть труднее, чем текст</p>
     <div class="toolbar">
       <button id="brush" class="primary active-tool">🖌️ Кисть</button>
       <button id="eraser" class="secondary">🧽 Ластик</button>
       <button id="clear" class="secondary">🗑️ Очистить</button>
-      <button id="next" class="primary">➡️ Следующая зарисовка </button>
+      <button id="next" class="primary">➡️ Следующая зарисовка</button>
       <button id="finish" class="primary">✅ Завершить</button>
     </div>
     <div class="controls">
@@ -259,9 +254,7 @@
         <span id="thicknessValue" style="font-size:13px; color:#64748b;">5px</span>
       </label>
     </div>
-    <!-- Контейнер с рамкой -->
     <div id="canvas-container">
-      <!-- Угловые метки (опционально) -->
       <div class="corner tl">↖️</div>
       <div class="corner tr">↗️</div>
       <div class="corner bl">↙️</div>
@@ -271,7 +264,6 @@
     <h3 class="thumbnails-title">Все зарисовки</h3>
     <p class="hint">Кликните по картинке, чтобы отредактировать</p>
     <div id="thumbnails"></div>
-    <!-- Модальное окно -->
     <div id="previewModal">
       <img id="previewImage" alt="Объединённые зарисовки" />
       <div id="previewActions">
@@ -288,6 +280,7 @@
     let allDrawings = [];
     let currentTool = 'brush';
     let editingIndex = null;
+
     const brushBtn = document.getElementById('brush');
     const eraserBtn = document.getElementById('eraser');
     const clearBtn = document.getElementById('clear');
@@ -331,6 +324,7 @@
 
     brushBtn.addEventListener('click', () => setTool('brush'));
     eraserBtn.addEventListener('click', () => setTool('eraser'));
+
     colorInput.addEventListener('input', () => {
       if (currentTool === 'brush') {
         ctx.strokeStyle = colorInput.value;
@@ -353,7 +347,6 @@
       currentDrawing = [];
       updateThumbnails();
       editingIndex = null;
-      // Уведомление удалено: alert("Мысль сохранена!...")
     });
 
     function updateThumbnails() {
@@ -383,7 +376,6 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         editingIndex = index;
-        // Уведомление удалено: alert(`Редактируем мысль №${index + 1}`);
       };
       img.src = allDrawings[index];
     }
@@ -391,7 +383,6 @@
     function generateFinalImage() {
       return new Promise((resolve, reject) => {
         if (allDrawings.length === 0) {
-          // Уведомление удалено: alert("Нет ни одной зарисовки!");
           resolve(null);
           return;
         }
@@ -475,7 +466,6 @@
           URL.revokeObjectURL(imageUrl);
         };
       } catch (err) {
-        // Уведомление удалено: alert("Ошибка при создании изображения.");
         console.error("Ошибка при создании изображения:", err);
       }
     });
@@ -484,12 +474,7 @@
       previewModal.style.display = 'none';
     });
 
-    // Рисование
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-
+    // Рисование (мышка)
     function startDrawing(e) {
       isDrawing = true;
       const rect = canvas.getBoundingClientRect();
@@ -514,6 +499,46 @@
       isDrawing = false;
       ctx.beginPath();
     }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Рисование (тач)
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      isDrawing = true;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      currentDrawing.push({ x, y });
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      const x = touch.clientX - rect.left;
+      const y = touch.clientY - rect.top;
+      ctx.lineTo(x, y);
+      ctx.stroke();
+      currentDrawing.push({ x, y });
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => {
+      isDrawing = false;
+      ctx.beginPath();
+    });
+
+    canvas.addEventListener('touchcancel', () => {
+      isDrawing = false;
+      ctx.beginPath();
+    });
 
     // Инициализация
     setTool('brush');

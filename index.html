@@ -16,7 +16,7 @@
       --border: #e2e8f0;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --frame-color: #3b82f6;
+      --frame-color: #3b82f6; /* Цвет рамки */
     }
     * {
       box-sizing: border-box;
@@ -35,12 +35,11 @@
       display: flex;
       align-items: flex-start;
       gap: 20px;
-      padding: 10px;
     }
 
     /* Левая панель с изображением */
     .image-panel {
-      flex: 0 0 140px;
+      flex: 0 0 120px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -50,16 +49,15 @@
     .image-panel img {
       width: 100%;
       height: auto;
-      max-height: 140px;
       object-fit: contain;
-      opacity: 0.9;
+      opacity: 0.8;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     }
     .image-panel .label {
       font-size: 0.9rem;
       color: #64748b;
       text-align: center;
-      margin-top: 8px;
+      margin-top: 10px;
       font-weight: 500;
     }
 
@@ -276,7 +274,7 @@
   <div class="container">
     <!-- Левая панель с изображением -->
     <div class="image-panel">
-      <img src="https://avatars.mds.yandex.net/i?id=0d9d91779a67cf1205409e1993740a5b_l-13080820-images-thumbs&n=13" alt="Отпечаток пальца" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1830/1830668.png" alt="Отпечаток пальца" />
       <div class="label">Листайте<br>пальцем</div>
     </div>
 
@@ -560,7 +558,7 @@
 
     // Рисование (тач)
     canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Только для canvas
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       const x = touch.clientX - rect.left;
@@ -573,7 +571,7 @@
 
     canvas.addEventListener('touchmove', (e) => {
       if (!isDrawing) return;
-      e.preventDefault();
+      e.preventDefault(); // Только при рисовании
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       const x = touch.clientX - rect.left;

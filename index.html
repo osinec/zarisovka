@@ -18,11 +18,9 @@
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       --frame-color: #3b82f6; /* Цвет рамки */
     }
-
     * {
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background-color: var(--bg);
@@ -31,7 +29,6 @@
       padding: 20px;
       line-height: 1.6;
     }
-
     h1 {
       font-weight: 700;
       font-size: 2rem;
@@ -39,19 +36,16 @@
       margin-bottom: 20px;
       text-align: center;
     }
-
     .subtitle {
       font-size: 1rem;
       color: #64748b;
       margin-bottom: 30px;
       text-align: center;
     }
-
     .container {
       max-width: 1000px;
       margin: 0 auto;
     }
-
     /* Контейнер с рамкой */
     #canvas-container {
       margin: 20px auto;
@@ -64,7 +58,6 @@
       background-color: white;
       border: 3px solid var(--frame-color); /* Яркая рамка вокруг */
     }
-
     #canvas-container::before {
       content: "";
       position: absolute;
@@ -74,18 +67,15 @@
       pointer-events: none;
       border-radius: 8px;
     }
-
     #canvas-container:hover {
       transform: translateY(-2px);
     }
-
     canvas {
       display: block;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       background-color: white;
     }
-
     /* Угловые метки (опционально) */
     .corner {
       position: absolute;
@@ -98,7 +88,6 @@
     .corner.tr { top: 20px; right: 20px; }
     .corner.bl { bottom: 20px; left: 20px; }
     .corner.br { bottom: 20px; right: 20px; }
-
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -110,7 +99,6 @@
       border-radius: 12px;
       box-shadow: var(--shadow);
     }
-
     button {
       padding: 10px 18px;
       font-size: 15px;
@@ -124,33 +112,27 @@
       transition: all 0.2s ease;
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
-
     button.primary {
       background-color: var(--primary);
       color: white;
     }
-
     button.primary:hover {
       background-color: var(--primary-hover);
       transform: translateY(-1px);
     }
-
     button.secondary {
       background-color: var(--border);
       color: var(--text);
     }
-
     button.secondary:hover {
       background-color: #cbd5e1;
     }
-
     button.active-tool {
       background-color: var(--accent);
       color: white;
       font-weight: 600;
       transform: translateY(-1px);
     }
-
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -162,7 +144,6 @@
       border-radius: 12px;
       box-shadow: var(--shadow);
     }
-
     .controls label {
       font-size: 14px;
       font-weight: 500;
@@ -171,7 +152,6 @@
       align-items: center;
       gap: 6px;
     }
-
     /* Миниатюры */
     .thumbnails-title {
       font-size: 1.1rem;
@@ -180,7 +160,6 @@
       margin: 30px 0 15px;
       text-align: center;
     }
-
     #thumbnails {
       display: flex;
       flex-wrap: wrap;
@@ -192,7 +171,6 @@
       background: var(--card);
       box-shadow: var(--shadow);
     }
-
     .thumbnail {
       width: 130px;
       height: 100px;
@@ -203,19 +181,16 @@
       overflow: hidden;
       transition: all 0.2s ease;
     }
-
     .thumbnail:hover {
       border-color: var(--primary);
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(37, 99, 235, 0.15);
     }
-
     .thumbnail img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
-
     .thumbnail-number {
       position: absolute;
       bottom: 4px;
@@ -227,7 +202,6 @@
       border-radius: 4px;
       color: var(--text);
     }
-
     /* Модальное окно */
     #previewModal {
       display: none;
@@ -241,12 +215,10 @@
       flex-direction: column;
       animation: fadeIn 0.3s ease;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
     #previewImage {
       max-width: 90vw;
       max-height: 75vh;
@@ -254,13 +226,11 @@
       border: 5px solid white;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
     }
-
     #previewActions {
       margin-top: 20px;
       display: flex;
       gap: 12px;
     }
-
     /* Подсказка */
     .hint {
       font-size: 14px;
@@ -273,7 +243,6 @@
   <div class="container">
     <h1>🎨 Мои мысли</h1>
     <p class="subtitle">Рисуйте, стирайте, сохраняйте идеи и объединяйте их в один арт.</p>
-
     <div class="toolbar">
       <button id="brush" class="primary active-tool">🖌️ Кисть</button>
       <button id="eraser" class="secondary">🧽 Ластик</button>
@@ -281,7 +250,6 @@
       <button id="next" class="primary">➡️ Сохранить</button>
       <button id="finish" class="primary">✅ Завершить</button>
     </div>
-
     <div class="controls">
       <label>
         Цвет: <input type="color" id="color" value="#2563eb" />
@@ -291,7 +259,6 @@
         <span id="thicknessValue" style="font-size:13px; color:#64748b;">5px</span>
       </label>
     </div>
-
     <!-- Контейнер с рамкой -->
     <div id="canvas-container">
       <!-- Угловые метки (опционально) -->
@@ -301,11 +268,9 @@
       <div class="corner br">↘️</div>
       <canvas id="canvas" width="800" height="600"></canvas>
     </div>
-
     <h3 class="thumbnails-title">Все ваши мысли</h3>
     <p class="hint">Кликните по миниатюре, чтобы отредактировать</p>
     <div id="thumbnails"></div>
-
     <!-- Модальное окно -->
     <div id="previewModal">
       <img id="previewImage" alt="Объединённые зарисовки" />
@@ -315,7 +280,6 @@
       </div>
     </div>
   </div>
-
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -324,7 +288,6 @@
     let allDrawings = [];
     let currentTool = 'brush';
     let editingIndex = null;
-
     const brushBtn = document.getElementById('brush');
     const eraserBtn = document.getElementById('eraser');
     const clearBtn = document.getElementById('clear');
@@ -334,24 +297,20 @@
     const thicknessInput = document.getElementById('thickness');
     const thicknessValue = document.getElementById('thicknessValue');
     const thumbnailsContainer = document.getElementById('thumbnails');
-
     const previewModal = document.getElementById('previewModal');
     const previewImage = document.getElementById('previewImage');
     const downloadBtn = document.getElementById('downloadBtn');
     const closePreview = document.getElementById('closePreview');
-
     // Настройка контекста
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
     ctx.strokeStyle = colorInput.value;
     ctx.lineWidth = thicknessInput.value;
-
     // Обновление значения толщины
     thicknessInput.addEventListener('input', () => {
       ctx.lineWidth = thicknessInput.value;
       thicknessValue.textContent = `${thicknessInput.value}px`;
     });
-
     // Переключение инструментов
     function setTool(tool) {
       currentTool = tool;
@@ -366,21 +325,17 @@
         ctx.globalCompositeOperation = 'destination-out';
       }
     }
-
     brushBtn.addEventListener('click', () => setTool('brush'));
     eraserBtn.addEventListener('click', () => setTool('eraser'));
-
     colorInput.addEventListener('input', () => {
       if (currentTool === 'brush') {
         ctx.strokeStyle = colorInput.value;
       }
     });
-
     clearBtn.addEventListener('click', () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       currentDrawing = [];
     });
-
     nextBtn.addEventListener('click', () => {
       const dataUrl = canvas.toDataURL('image/png');
       if (editingIndex === null) {
@@ -392,34 +347,28 @@
       currentDrawing = [];
       updateThumbnails();
       editingIndex = null;
-      alert(`Мысль сохранена! Всего: ${allDrawings.length}`);
+      // Уведомление alert удалено: "Мысль сохранена! Всего: ..."
     });
-
     function updateThumbnails() {
       thumbnailsContainer.innerHTML = '';
       allDrawings.forEach((dataUrl, index) => {
         const thumb = document.createElement('div');
         thumb.className = 'thumbnail';
         thumb.dataset.index = index;
-
         const img = document.createElement('img');
         img.src = dataUrl;
         img.alt = `Мысль ${index + 1}`;
-
         const number = document.createElement('div');
         number.className = 'thumbnail-number';
         number.textContent = index + 1;
-
         thumb.appendChild(img);
         thumb.appendChild(number);
         thumbnailsContainer.appendChild(thumb);
-
         thumb.addEventListener('click', () => {
           loadDrawingForEdit(index);
         });
       });
     }
-
     function loadDrawingForEdit(index) {
       const img = new Image();
       img.onload = () => {
@@ -430,7 +379,6 @@
       };
       img.src = allDrawings[index];
     }
-
     function generateFinalImage() {
       return new Promise((resolve, reject) => {
         if (allDrawings.length === 0) {
@@ -438,26 +386,21 @@
           resolve(null);
           return;
         }
-
         const padding = 50;
         const width = canvas.width;
         const height = canvas.height;
         const totalHeight = allDrawings.length * (height + padding) - padding;
-
         const finalCanvas = document.createElement('canvas');
         finalCanvas.width = width;
         finalCanvas.height = totalHeight;
         const finalCtx = finalCanvas.getContext('2d');
         finalCtx.fillStyle = 'white';
         finalCtx.fillRect(0, 0, width, totalHeight);
-
         finalCtx.font = 'bold 36px Arial';
         finalCtx.textBaseline = 'bottom';
         finalCtx.fillStyle = 'black';
-
         let loaded = 0;
         const images = [];
-
         allDrawings.forEach((dataUrl, index) => {
           const img = new Image();
           img.onload = () => {
@@ -505,16 +448,13 @@
         });
       });
     }
-
     finishBtn.addEventListener('click', async () => {
       try {
         const blob = await generateFinalImage();
         if (!blob) return;
-
         const imageUrl = URL.createObjectURL(blob);
         previewImage.src = imageUrl;
         previewModal.style.display = 'flex';
-
         downloadBtn.onclick = () => {
           const a = document.createElement('a');
           a.href = imageUrl;
@@ -529,17 +469,14 @@
         console.error(err);
       }
     });
-
     closePreview.addEventListener('click', () => {
       previewModal.style.display = 'none';
     });
-
     // Рисование
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
-
     function startDrawing(e) {
       isDrawing = true;
       const rect = canvas.getBoundingClientRect();
@@ -549,7 +486,6 @@
       ctx.moveTo(x, y);
       currentDrawing.push({ x, y });
     }
-
     function draw(e) {
       if (!isDrawing) return;
       const rect = canvas.getBoundingClientRect();
@@ -559,12 +495,10 @@
       ctx.stroke();
       currentDrawing.push({ x, y });
     }
-
     function stopDrawing() {
       isDrawing = false;
       ctx.beginPath();
     }
-
     // Инициализация
     setTool('brush');
   </script>

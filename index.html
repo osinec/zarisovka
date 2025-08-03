@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Зарисовка к выступлению</title>
+  <title>Зарисовки к выступлению</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -16,7 +16,7 @@
       --border: #e2e8f0;
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      --frame-color: #3b82f6;
+      --frame-color: #3b82f6; /* Цвет рамки */
     }
     * {
       box-sizing: border-box;
@@ -43,11 +43,46 @@
       text-align: center;
     }
     .container {
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 10px;
     }
+
+    /* Блок с подсказкой */
+    .hint-panel {
+      flex: 0 0 120px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 15px 0;
+      color: #64748b;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .hint-panel img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      opacity: 0.8;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+    .hint-panel .label {
+      font-weight: 500;
+    }
+
+    /* Основная рабочая область */
+    .main-content {
+      flex: 1;
+      min-width: 0;
+    }
+
     #canvas-container {
-      margin: 20px auto;
+      margin: 20px 0;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: var(--shadow-lg);
@@ -86,6 +121,7 @@
     .corner.tr { top: 20px; right: 20px; }
     .corner.bl { bottom: 20px; left: 20px; }
     .corner.br { bottom: 20px; right: 20px; }
+
     .toolbar {
       display: flex;
       flex-wrap: wrap;
@@ -236,42 +272,57 @@
 </head>
 <body>
   <div class="container">
-    <h1>Зарисовки к выступлению</h1>
-    <p class="subtitle">Образы и картинки забыть труднее, чем текст</p>
-    <div class="toolbar">
-      <button id="brush" class="primary active-tool">🖌️ Кисть</button>
-      <button id="eraser" class="secondary">🧽 Ластик</button>
-      <button id="clear" class="secondary">🗑️ Очистить</button>
-      <button id="next" class="primary">➡️ Следующая зарисовка</button>
-      <button id="finish" class="primary">✅ Завершить</button>
+    <!-- Подсказка слева -->
+    <div class="hint-panel">
+      <img src="https://cdn-icons-png.flaticon.com/512/1830/1830668.png" alt="Отпечаток пальца" />
+      <div class="label">Листайте<br>пальцем</div>
     </div>
-    <div class="controls">
-      <label>
-        Цвет: <input type="color" id="color" value="#2563eb" />
-      </label>
-      <label>
-        Толщина: <input type="range" id="thickness" min="1" max="50" value="5" style="width: 100px;" />
-        <span id="thicknessValue" style="font-size:13px; color:#64748b;">5px</span>
-      </label>
-    </div>
-    <div id="canvas-container">
-      <div class="corner tl">↖️</div>
-      <div class="corner tr">↗️</div>
-      <div class="corner bl">↙️</div>
-      <div class="corner br">↘️</div>
-      <canvas id="canvas" width="800" height="600"></canvas>
-    </div>
-    <h3 class="thumbnails-title">Все зарисовки</h3>
-    <p class="hint">Кликните по картинке, чтобы отредактировать</p>
-    <div id="thumbnails"></div>
-    <div id="previewModal">
-      <img id="previewImage" alt="Объединённые зарисовки" />
-      <div id="previewActions">
-        <button id="downloadBtn" class="primary">📥 Скачать PNG</button>
-        <button id="closePreview" class="secondary">❌ Закрыть</button>
+
+    <!-- Основной контент -->
+    <div class="main-content">
+      <h1>Зарисовки к выступлению</h1>
+      <p class="subtitle">Образы и картинки забыть труднее, чем текст</p>
+
+      <div class="toolbar">
+        <button id="brush" class="primary active-tool">🖌️ Кисть</button>
+        <button id="eraser" class="secondary">🧽 Ластик</button>
+        <button id="clear" class="secondary">🗑️ Очистить</button>
+        <button id="next" class="primary">➡️ Следующая зарисовка</button>
+        <button id="finish" class="primary">✅ Завершить</button>
+      </div>
+
+      <div class="controls">
+        <label>
+          Цвет: <input type="color" id="color" value="#2563eb" />
+        </label>
+        <label>
+          Толщина: <input type="range" id="thickness" min="1" max="50" value="5" style="width: 100px;" />
+          <span id="thicknessValue" style="font-size:13px; color:#64748b;">5px</span>
+        </label>
+      </div>
+
+      <div id="canvas-container">
+        <div class="corner tl">↖️</div>
+        <div class="corner tr">↗️</div>
+        <div class="corner bl">↙️</div>
+        <div class="corner br">↘️</div>
+        <canvas id="canvas" width="800" height="600"></canvas>
+      </div>
+
+      <h3 class="thumbnails-title">Все зарисовки</h3>
+      <p class="hint">Кликните по картинке, чтобы отредактировать</p>
+      <div id="thumbnails"></div>
+
+      <div id="previewModal">
+        <img id="previewImage" alt="Объединённые зарисовки" />
+        <div id="previewActions">
+          <button id="downloadBtn" class="primary">📥 Скачать PNG</button>
+          <button id="closePreview" class="secondary">❌ Закрыть</button>
+        </div>
       </div>
     </div>
   </div>
+
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -474,7 +525,7 @@
       previewModal.style.display = 'none';
     });
 
-    // Рисование (мышка)
+    // Рисование (мышь)
     function startDrawing(e) {
       isDrawing = true;
       const rect = canvas.getBoundingClientRect();
@@ -505,9 +556,9 @@
     canvas.addEventListener('mouseup', stopDrawing);
     canvas.addEventListener('mouseout', stopDrawing);
 
-    // Рисование (тач)
+    // Рисование (тач) — только на canvas, не блокирует прокрутку всей страницы
     canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // Только для canvas
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       const x = touch.clientX - rect.left;
@@ -520,7 +571,7 @@
 
     canvas.addEventListener('touchmove', (e) => {
       if (!isDrawing) return;
-      e.preventDefault();
+      e.preventDefault(); // Только при рисовании
       const rect = canvas.getBoundingClientRect();
       const touch = e.touches[0];
       const x = touch.clientX - rect.left;
